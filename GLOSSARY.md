@@ -9,7 +9,7 @@ Nomor identitas unik bawaan dari chip RFID (biasanya 4 byte atau 7 byte) sesuai 
 _Avoid_: ID Kartu, Hex Code, Serial Fisik
 
 **Nomor RFID (10 Digit)**:
-Representasi desimal 32-bit unsigned integer (panjang 10 digit dengan zero-padding jika kurang) dari 4 byte UID kartu RFID yang digunakan sebagai kunci pencocokan data santri di sistem web.
+Representasi desimal 32-bit unsigned integer (panjang 10 digit dengan zero-padding) dari 4 byte UID kartu RFID dalam format Little-Endian (LSB ke MSB) yang identik dengan output USB RFID Reader fisik di Pesantrenqu.
 _Avoid_: Barcode, Nomor Akun, ID Santri
 
 **RFID USB Reader**:
