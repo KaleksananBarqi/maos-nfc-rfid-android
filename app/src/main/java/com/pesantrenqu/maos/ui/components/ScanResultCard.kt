@@ -38,7 +38,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun ScanResultCard(
     decimal10Digit: String,
-    decimalLittleEndian: String,
+    decimalBigEndian: String,
     hexFormatted: String,
     justCopied: Boolean,
     onCopy: (String) -> Unit,
@@ -100,7 +100,7 @@ fun ScanResultCard(
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(
-                    text = "Little-Endian: $decimalLittleEndian",
+                    text = "Big-Endian: $decimalBigEndian",
                     style = MaterialTheme.typography.bodySmall,
                     fontFamily = FontFamily.Monospace,
                     color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
@@ -108,6 +108,10 @@ fun ScanResultCard(
                 Text(
                     text = "Hex UID: $hexFormatted",
                     style = MaterialTheme.typography.bodySmall,
+                    fontFamily = FontFamily.Monospace,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
+                )
+            }
                     fontFamily = FontFamily.Monospace,
                     color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
                 )

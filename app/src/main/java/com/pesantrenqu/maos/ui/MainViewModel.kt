@@ -76,7 +76,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 dao.insert(
                     ScanHistoryEntity(
                         decimal10Digit = result.decimal10Digit,
-                        decimalLittleEndian = result.decimalLittleEndian,
+                        decimalLittleEndian = result.decimalBigEndian,
                         hexFormatted = result.hexFormatted
                     )
                 )
@@ -85,7 +85,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 _uiState.update {
                     it.copy(
                         lastDecimal10Digit = result.decimal10Digit,
-                        lastDecimalLittleEndian = result.decimalLittleEndian,
+                        lastDecimalBigEndian = result.decimalBigEndian,
                         lastHexFormatted = result.hexFormatted,
                         justCopied = true
                     )

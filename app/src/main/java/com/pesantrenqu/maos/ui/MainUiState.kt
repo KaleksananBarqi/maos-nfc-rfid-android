@@ -16,11 +16,11 @@ data class MainUiState(
     /** Apakah NFC saat ini aktif di pengaturan perangkat */
     val isNfcEnabled: Boolean = true,
 
-    /** Angka 10 digit desimal Big-Endian hasil pemindaian terakhir (null jika belum ada) */
+    /** Angka 10 digit desimal Little-Endian hasil pemindaian terakhir (format utama) */
     val lastDecimal10Digit: String? = null,
 
-    /** Angka 10 digit desimal Little-Endian hasil pemindaian terakhir */
-    val lastDecimalLittleEndian: String? = null,
+    /** Angka 10 digit desimal Big-Endian hasil pemindaian terakhir (format sekunder) */
+    val lastDecimalBigEndian: String? = null,
 
     /** Format heksadesimal mentah hasil pemindaian terakhir */
     val lastHexFormatted: String? = null,

@@ -71,7 +71,7 @@ fun MainScreen(
             } else if (uiState.lastDecimal10Digit != null) {
                 ScanResultCard(
                     decimal10Digit = uiState.lastDecimal10Digit,
-                    decimalLittleEndian = uiState.lastDecimalLittleEndian ?: "",
+                    decimalBigEndian = uiState.lastDecimalBigEndian ?: "",
                     hexFormatted = uiState.lastHexFormatted ?: "",
                     justCopied = uiState.justCopied,
                     onCopy = onCopy,
