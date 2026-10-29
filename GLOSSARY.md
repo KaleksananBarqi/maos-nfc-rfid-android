@@ -1,4 +1,4 @@
-# RFID 10 Angka Taker
+# Maos NFC RFID Android
 
 Konteks untuk aplikasi pembacaan kartu identitas RFID santri berbasis Android NFC dan konversi identitas kartu ke format desimal 10 digit yang kompatibel dengan sistem Pesantrenqu.
 
@@ -16,9 +16,9 @@ _Avoid_: Barcode, Nomor Akun, ID Santri
 Perangkat keras pembaca kartu 13.56 MHz eksternal berbasis USB keyboard emulation yang langsung mengeluarkan 10 digit desimal saat kartu ditempel.
 _Avoid_: Scanner Barcode, Dongle NFC
 
-**RFID Taker App**:
+**Maos NFC RFID Android**:
 Aplikasi Android berbasis NFC yang menangkap UID kartu dan langsung menyajikannya dalam format desimal 10 digit untuk disalin atau dikirim.
-_Avoid_: NFC Tools, Tag Info
+_Avoid_: RFID Taker App, NFC Tools, Tag Info
 
 **ReaderMode API**:
 Antarmuka pemrograman Android (`enableReaderMode`) untuk memindai tag NFC secara instan dengan menonaktifkan suara sistem bawaan dan mencegah dialog pemilih aplikasi.
