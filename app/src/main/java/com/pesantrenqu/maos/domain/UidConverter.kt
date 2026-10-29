@@ -1,5 +1,7 @@
 package com.pesantrenqu.maos.domain
 
+import java.util.Locale
+
 /**
  * Mesin konversi UID kartu RFID ke format desimal 10 digit.
  *
@@ -52,7 +54,7 @@ object UidConverter {
                 ((bytes[1].toLong() and 0xFF) shl 16) or
                 ((bytes[2].toLong() and 0xFF) shl 8) or
                 (bytes[3].toLong() and 0xFF)
-        return String.format("%010d", value)
+        return String.format(Locale.US, "%010d", value)
     }
 
     /**
@@ -66,7 +68,7 @@ object UidConverter {
                 ((bytes[2].toLong() and 0xFF) shl 16) or
                 ((bytes[1].toLong() and 0xFF) shl 8) or
                 (bytes[0].toLong() and 0xFF)
-        return String.format("%010d", value)
+        return String.format(Locale.US, "%010d", value)
     }
 
     /**
@@ -76,7 +78,7 @@ object UidConverter {
      */
     internal fun toHexFormatted(bytes: ByteArray): String {
         return bytes.joinToString(":") { byte ->
-            String.format("%02X", byte)
+            String.format(Locale.US, "%02X", byte)
         }
     }
 }
