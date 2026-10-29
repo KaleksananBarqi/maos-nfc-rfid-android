@@ -15,20 +15,25 @@ import org.junit.Test
  */
 class UidConverterTest {
 
-    // == Big-Endian 10 Digit ==
+    // == Little-Endian 10 Digit (Format Utama) ==
 
     @Test
-    fun `konversi 4-byte UID standar ke desimal 10 digit Big-Endian`() {
-        // UID kartu santri "Adi Siestaa" dari sistem Pesantrenqu
-        val uid = byteArrayOf(0x90.toByte(), 0x80.toByte(), 0x78, 0x0F)
+    fun `konversi UID kartu santri menghasilkan desimal 10 digit Little-Endian 2424339447`() {
+        // UID kartu santri dari pengujian aktual ponsel & USB Reader PC: F7:7B:80:90
+        val uid = byteArrayOf(0xF7.toByte(), 0x7B, 0x80.toByte(), 0x90.toByte())
         val result = UidConverter.convert(uid)
-        assertEquals("2424338447", result.decimal10Digit)
+
+        // Format primer harus Little-Endian
+        assertEquals("2424339447", result.decimal10Digit)
+        // Format sekunder harus Big-Endian
+        assertEquals("4152066192", result.decimalBigEndian)
+        // Format heksadesimal mentah
+        assertEquals("F7:7B:80:90", result.hexFormatted)
     }
 
     @Test
-    fun `konversi UID bernilai kecil menghasilkan zero-padding 10 digit`() {
-        // UID yang menghasilkan angka kurang dari 10 digit harus di-pad dengan nol
-        val uid = byteArrayOf(0x00, 0x00, 0x00, 0x01)
+    fun `konversi 4-byte UID dengan urutan byte kecil menghasilkan zero-padding 10 digit`() {
+        val uid = byteArrayOf(0x01, 0x00, 0x00, 0x00)
         val result = UidConverter.convert(uid)
         assertEquals("0000000001", result.decimal10Digit)
     }
@@ -38,6 +43,7 @@ class UidConverterTest {
         val uid = byteArrayOf(0x00, 0x00, 0x00, 0x00)
         val result = UidConverter.convert(uid)
         assertEquals("0000000000", result.decimal10Digit)
+        assertEquals("0000000000", result.decimalBigEndian)
     }
 
     @Test
@@ -46,39 +52,34 @@ class UidConverterTest {
         val uid = byteArrayOf(0xFF.toByte(), 0xFF.toByte(), 0xFF.toByte(), 0xFF.toByte())
         val result = UidConverter.convert(uid)
         assertEquals("4294967295", result.decimal10Digit)
+        assertEquals("4294967295", result.decimalBigEndian)
     }
 
     @Test
     fun `konversi UID dengan byte tinggi yang menyebabkan signed integer negatif`() {
-        // 0x80000000 = 2147483648, yang akan menjadi negatif jika diperlakukan sebagai signed Int
-        val uid = byteArrayOf(0x80.toByte(), 0x00, 0x00, 0x00)
+        // 0x00000080 dalam Little-Endian -> byte[3]=0x80 -> 2147483648
+        val uid = byteArrayOf(0x00, 0x00, 0x00, 0x80.toByte())
         val result = UidConverter.convert(uid)
         assertEquals("2147483648", result.decimal10Digit)
     }
 
-    // == Little-Endian 10 Digit ==
+    // == Big-Endian 10 Digit (Format Sekunder) ==
 
     @Test
-    fun `konversi 4-byte UID ke desimal 10 digit Little-Endian`() {
+    fun `format sekunder Big-Endian dihitung dengan benar`() {
         val uid = byteArrayOf(0x90.toByte(), 0x80.toByte(), 0x78, 0x0F)
         val result = UidConverter.convert(uid)
-        assertEquals("0259555472", result.decimalLittleEndian)
-    }
-
-    @Test
-    fun `Little-Endian dengan zero-padding`() {
-        val uid = byteArrayOf(0x01, 0x00, 0x00, 0x00)
-        val result = UidConverter.convert(uid)
-        assertEquals("0000000001", result.decimalLittleEndian)
+        // Big-Endian dari 9080780F adalah 2424338447
+        assertEquals("2424338447", result.decimalBigEndian)
     }
 
     // == Hex Formatted ==
 
     @Test
     fun `format hex untuk 4-byte UID`() {
-        val uid = byteArrayOf(0x90.toByte(), 0x80.toByte(), 0x78, 0x0F)
+        val uid = byteArrayOf(0xF7.toByte(), 0x7B, 0x80.toByte(), 0x90.toByte())
         val result = UidConverter.convert(uid)
-        assertEquals("90:80:78:0F", result.hexFormatted)
+        assertEquals("F7:7B:80:90", result.hexFormatted)
     }
 
     @Test
@@ -91,25 +92,17 @@ class UidConverterTest {
         assertEquals("04:AB:CD:EF:12:34:56", result.hexFormatted)
     }
 
-    @Test
-    fun `format hex menggunakan huruf kapital dan zero-pad per byte`() {
-        val uid = byteArrayOf(0x0A, 0x0B, 0x0C, 0x0D)
-        val result = UidConverter.convert(uid)
-        assertEquals("0A:0B:0C:0D", result.hexFormatted)
-    }
-
     // == Kartu 7-Byte ==
 
     @Test
     fun `konversi 7-byte UID mengekstrak 4 byte pertama untuk desimal`() {
-        // Untuk kartu 7-byte (MIFARE Ultralight/NTAG), hanya 4 byte pertama yang digunakan
         val uid = byteArrayOf(
-            0x90.toByte(), 0x80.toByte(), 0x78, 0x0F,
+            0xF7.toByte(), 0x7B, 0x80.toByte(), 0x90.toByte(),
             0xAA.toByte(), 0xBB.toByte(), 0xCC.toByte()
         )
         val result = UidConverter.convert(uid)
-        // Desimal 10 digit tetap dari 4 byte pertama
-        assertEquals("2424338447", result.decimal10Digit)
+        // Desimal 10 digit primer tetap dari 4 byte pertama
+        assertEquals("2424339447", result.decimal10Digit)
     }
 
     // == Validasi Input ==
@@ -133,14 +126,13 @@ class UidConverterTest {
 
     @Test
     fun `rawBytes menyimpan salinan UID asli tanpa modifikasi`() {
-        val uid = byteArrayOf(0x90.toByte(), 0x80.toByte(), 0x78, 0x0F)
+        val uid = byteArrayOf(0xF7.toByte(), 0x7B, 0x80.toByte(), 0x90.toByte())
         val result = UidConverter.convert(uid)
 
-        // rawBytes harus berisi data yang sama
         assertEquals(uid.toList(), result.rawBytes.toList())
 
-        // rawBytes harus merupakan salinan terpisah (bukan referensi yang sama)
+        // Memastikan immutability
         uid[0] = 0x00
-        assertEquals(0x90.toByte(), result.rawBytes[0])
+        assertEquals(0xF7.toByte(), result.rawBytes[0])
     }
 }

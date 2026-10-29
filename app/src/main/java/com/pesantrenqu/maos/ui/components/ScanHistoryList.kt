@@ -169,7 +169,7 @@ private fun HistoryItem(
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Text(
-                    text = "Hex: ${entry.hexFormatted}",
+                    text = "BE: ${entry.decimalLittleEndian} • Hex: ${entry.hexFormatted}",
                     style = MaterialTheme.typography.bodySmall,
                     fontFamily = FontFamily.Monospace,
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
