@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.NfcOff
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -47,7 +47,7 @@ fun NfcDisabledCard(
             verticalArrangement = Arrangement.Center
         ) {
             Icon(
-                imageVector = Icons.Default.NfcOff,
+                imageVector = Icons.Default.Warning,
                 contentDescription = "NFC Nonaktif",
                 modifier = Modifier.size(48.dp),
                 tint = MaterialTheme.colorScheme.onErrorContainer
