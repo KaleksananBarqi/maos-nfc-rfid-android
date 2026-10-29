@@ -112,10 +112,6 @@ fun ScanResultCard(
                     color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
                 )
             }
-                    fontFamily = FontFamily.Monospace,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
-                )
-            }
 
             Spacer(modifier = Modifier.height(16.dp))
 
